@@ -1,0 +1,67 @@
+{
+    "payload": {
+        "streamId": "762c64bb55",
+        "userId": "81fff8de8d",
+        "activityMessage": "Commit created on branch main: 8445f44a50 (Sent 344 objects from Revit2021.)",
+        "event": {
+            "event_name": "commit_create",
+            "data": {
+                "id": "8445f44a50",
+                "commit": {
+                    "streamId": "762c64bb55",
+                    "branchName": "main",
+                    "objectId": "673863a451b606e6b3967e98ea28696b",
+                    "message": "Sent 344 objects from Revit2021.",
+                    "sourceApplication": "Revit2021",
+                    "totalChildrenCount": 0,
+                    "previousCommitIds": null,
+                    "parents": [
+                        "4a6baa9435"
+                    ]
+                }
+            }
+        },
+        "server": {
+            "name": "Community Server",
+            "company": "Unknown Company",
+            "description": "This a community deployment of a Speckle Server.",
+            "adminContact": "n/a",
+            "termsOfService": "n/a",
+            "canonicalUrl": "http://anthe.local",
+            "completed": false,
+            "inviteOnly": false,
+            "version": "custom"
+        },
+        "stream": {
+            "id": "762c64bb55",
+            "name": "Hackathon Revit Demo",
+            "description": "",
+            "isPublic": true,
+            "clonedFrom": null,
+            "createdAt": "2021-09-21T11:20:22.330Z",
+            "updatedAt": "2021-09-21T14:49:44.603Z",
+            "role": "stream:owner"
+        },
+        "user": {
+            "id": "81fff8de8d",
+            "suuid": "7355a485-f754-4a04-bab7-1adb844c10ae",
+            "createdAt": "2021-09-21T11:12:37.893Z",
+            "name": "Alan",
+            "bio": null,
+            "company": "Speckle",
+            "verified": false,
+            "avatar": null,
+            "profiles": null
+        },
+        "webhook": {
+            "id": "60c710daa1",
+            "streamId": "762c64bb55",
+            "url": "http://localhost:8000/calculate",
+            "description": "Do carbon",
+            "triggers": [
+                "commit_create"
+            ],
+            "enabled": true
+        }
+    }
+}

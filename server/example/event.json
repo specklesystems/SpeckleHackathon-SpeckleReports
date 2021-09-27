@@ -1,0 +1,60 @@
+{
+    "streamId": "762c64bb55",
+    "userId": "4fb8a53afd",
+    "activityMessage": "Commit created on branch globals: eec5a89918 (saving)",
+    "event": {
+        "event_name": "commit_create",
+        "data": {
+            "id": "eec5a89918",
+            "commit": {
+                "streamId": "762c64bb55",
+                "branchName": "globals",
+                "objectId": "0cdb05dddbbf551b85c2072e5c437b2c",
+                "message": "saving",
+                "sourceApplication": "web"
+            }
+        }
+    },
+    "server": {
+        "name": "Community Server",
+        "company": "Unknown Company",
+        "description": "This a community deployment of a Speckle Server.",
+        "adminContact": "n/a",
+        "termsOfService": "n/a",
+        "canonicalUrl": "http://anthe.local",
+        "completed": false,
+        "inviteOnly": false,
+        "version": "custom"
+    },
+    "stream": {
+        "id": "762c64bb55",
+        "name": "Hackathon Revit Demo",
+        "description": "",
+        "isPublic": true,
+        "clonedFrom": null,
+        "createdAt": "2021-09-21T11:20:22.330Z",
+        "updatedAt": "2021-09-21T12:39:56.250Z",
+        "role": "stream:owner"
+    },
+    "user": {
+        "id": "4fb8a53afd",
+        "suuid": "d2ab9e28-ac30-42b9-b487-6fcbffb13a1a",
+        "createdAt": "2021-09-21T10:56:58.523Z",
+        "name": "Gergo Jedlicska",
+        "bio": null,
+        "company": "Speckle",
+        "verified": false,
+        "avatar": null,
+        "profiles": null
+    },
+    "webhook": {
+        "id": "60c710daa1",
+        "streamId": "762c64bb55",
+        "url": "http://localhost:8000/calculate",
+        "description": "Do carbon",
+        "triggers": [
+            "commit_create"
+        ],
+        "enabled": true
+    }
+}
