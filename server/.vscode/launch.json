@@ -1,34 +1,32 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Python: Current File",
-            "type": "python",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "env": {
-                "PYTHONPATH": "${cwd}",
-                "SPECKLE_TOKEN": "19eec0f0f97407c38bffa4033d2f95dc05833621e4"
-            }
-        },
-        {
-            "name": "Python: FastAPI",
-            "type": "python",
-            "request": "launch",
-            "module": "uvicorn",
-            "args": [
-                "app.main:app",
-            ],
-            "jinja": true,
-            "justMyCode": true,
-            "env": {
-                "PYTHONPATH": "${cwd}",
-                "SPECKLE_TOKEN": "19eec0f0f97407c38bffa4033d2f95dc05833621e4"
-            }
-        }
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${cwd}",
+        "SPECKLE_TOKEN": "YOUR TOKEN HERE"
+      }
+    },
+    {
+      "name": "Python: FastAPI",
+      "type": "python",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["app.main:app"],
+      "jinja": true,
+      "justMyCode": true,
+      "env": {
+        "PYTHONPATH": "${cwd}",
+        "SPECKLE_TOKEN": "YOUR TOKEN HERE"
+      }
+    }
+  ]
 }
