@@ -1,0 +1,23 @@
+query($streamId: String!) {
+    stream(id: $streamId){
+        branch(name: "main"){
+            commits(limit: 1){
+                items {
+                    referencedObject
+                }
+            }
+        },
+        carbonBranch: branch(name: "carbon-results"){
+            commits(limit: 1){
+                items {
+                    referencedObject
+                }
+            }
+        },
+        webhooks {
+            items{
+                url
+            }
+        }
+    }
+}
