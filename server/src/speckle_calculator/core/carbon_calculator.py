@@ -3,7 +3,7 @@ from specklepy.objects import Base
 from typing import Dict, List
 from itertools import chain
 
-from speckle_carbon.core.carbon_repo import material_properties, type_material_mapping
+from speckle_calculator.core.carbon_repo import material_properties, type_material_mapping
 
 
 class CarbonDataPoint(Base):

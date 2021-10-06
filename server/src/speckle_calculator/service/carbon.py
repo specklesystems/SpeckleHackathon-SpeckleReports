@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from speckle_carbon import core
+from speckle_calculator import core
 
 from specklepy.api.operations import receive, send
 from specklepy.transports.abstract_transport import AbstractTransport

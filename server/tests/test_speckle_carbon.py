@@ -1,4 +1,4 @@
-from speckle_carbon import __version__
+from speckle_calculator import __version__
 
 
 def test_version():
