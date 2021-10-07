@@ -3,17 +3,16 @@ name = "speckle_calculator"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
-packages = [
-    { include = "speckle_calculator", from = "src" },
-]
+packages = [{ include = "speckle_calculator", from = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-uvicorn = {extras = ["standard"], version = "^0.15.0"}
+uvicorn = { extras = ["standard"], version = "^0.15.0" }
 specklepy = "^2.3.0"
-fastapi = {extras = ["uvicorn"], version = "^0.68.1"}
+fastapi = { extras = ["uvicorn"], version = "^0.68.1" }
 devtools = "^0.7.0"
 stringcase = "^1.2.0"
+gunicorn = "^20.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

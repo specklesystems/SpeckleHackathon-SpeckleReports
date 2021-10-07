@@ -1,16 +1,13 @@
 from typing import Any
 from fastapi import FastAPI, Depends
 from fastapi.background import BackgroundTasks
-from specklepy import objects
 from specklepy.api.client import SpeckleClient
-from specklepy.objects.base import Base
 from specklepy.transports.server.server import ServerTransport
 from speckle_calculator.service import carbon, discord
 from app.transport_provider import speckle_token_provider
 
 
 from pydantic import BaseModel, Field
-from devtools import debug
 import stringcase
 
 
