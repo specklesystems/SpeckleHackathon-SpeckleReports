@@ -12,6 +12,7 @@ from app.models import Webhook
 
 app = FastAPI()
 
+print("booting")
 
 @app.get("/health")
 async def health():
