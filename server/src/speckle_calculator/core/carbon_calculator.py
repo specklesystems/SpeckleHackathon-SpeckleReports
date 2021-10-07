@@ -3,7 +3,10 @@ from specklepy.objects import Base
 from typing import Dict, List
 from itertools import chain
 
-from speckle_calculator.core.carbon_repo import material_properties, type_material_mapping
+from speckle_calculator.core.carbon_repo import (
+    TYPE_MATERIAL_MAPPING,
+    MATERIAL_PROPERTIES,
+)
 
 
 class CarbonDataPoint(Base):
@@ -21,10 +24,6 @@ class CarbonData(Base):
     results: Dict[str, List[CarbonDataPoint]]
 
 
-type_material_mapping = type_material_mapping()
-material_properties_mapping = material_properties()
-
-
 def calculate_carbon(commit: Base) -> CarbonDataPoint:
     """It does the magic."""
 
@@ -38,8 +37,8 @@ def calculate_carbon(commit: Base) -> CarbonDataPoint:
     for object in objects:
         if parameters := getattr(object, "parameters", None):
             if volume := getattr(parameters, "HOST_VOLUME_COMPUTED", None):
-                if material := type_material_mapping.get(object.speckle_type):
-                    if material_props := material_properties_mapping.get(material):
+                if material := TYPE_MATERIAL_MAPPING.get(object.speckle_type):
+                    if material_props := MATERIAL_PROPERTIES.get(material):
                         density = material_props["density"]
                         co_value = material_props["kgCO2e"]
                         co2_value = volume.value * density * co_value

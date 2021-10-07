@@ -13,7 +13,7 @@ from app.models import Webhook
 app = FastAPI()
 
 
-@app.get("/healt")
+@app.get("/health")
 async def health():
     return True
 

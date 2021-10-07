@@ -1,6 +1,6 @@
 {
     "payload": {
-        "streamId": "762c64bb55",
+        "streamId": "3baa1ec795",
         "userId": "81fff8de8d",
         "activityMessage": "Commit created on branch main: 8445f44a50 (Sent 344 objects from Revit2021.)",
         "event": {
@@ -8,9 +8,9 @@
             "data": {
                 "id": "8445f44a50",
                 "commit": {
-                    "streamId": "762c64bb55",
+                    "streamId": "3baa1ec795",
                     "branchName": "main",
-                    "objectId": "673863a451b606e6b3967e98ea28696b",
+                    "objectId": "96b8d4f656144275ac2ffb62d8219e61",
                     "message": "Sent 344 objects from Revit2021.",
                     "sourceApplication": "Revit2021",
                     "totalChildrenCount": 0,
@@ -27,13 +27,13 @@
             "description": "This a community deployment of a Speckle Server.",
             "adminContact": "n/a",
             "termsOfService": "n/a",
-            "canonicalUrl": "http://anthe.local",
+            "canonicalUrl": "http://localhost:8080",
             "completed": false,
             "inviteOnly": false,
             "version": "custom"
         },
         "stream": {
-            "id": "762c64bb55",
+            "id": "3baa1ec795",
             "name": "Hackathon Revit Demo",
             "description": "",
             "isPublic": true,
@@ -55,7 +55,7 @@
         },
         "webhook": {
             "id": "60c710daa1",
-            "streamId": "762c64bb55",
+            "streamId": "3baa1ec795",
             "url": "http://localhost:8000/calculate",
             "description": "Do carbon",
             "triggers": [
