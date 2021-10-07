@@ -3,45 +3,36 @@ from dataclasses import dataclass
 from speckle_calculator import core
 
 from specklepy.api.operations import receive, send
-from specklepy.transports.abstract_transport import AbstractTransport
 from specklepy.transports.server import ServerTransport
 from specklepy.api.client import SpeckleClient
 
 
 @dataclass
-class CarbonInput:
-    """Input datastructure for carbon calculation."""
-
+class CarbonCalculator:
+    client: SpeckleClient
     stream_id: str
-    object_id: str
+    input_object_id: str
     target_branch_name: str = "carbon-results"
 
+    def __call__(self) -> None:
+        """
+        Create carbon report data for speckle commit.
 
-async def calculate_carbon(
-    carbon_input: CarbonInput, transport: AbstractTransport, client: SpeckleClient
-):
-    """
-    Create carbon report data for speckle commit.
+        Steps:
+            * get commit data from server
+            * call domain function
+            * make sure the new branch exists
+            * push result to a separate branch
+        """
+        transport = ServerTransport(self.client, self.stream_id)
+        input_base = receive(self.input_object_id, transport)
+        result = core.calculate_carbon(input_base)
 
-    Steps:
-        * get commit data from server
-        * call domain function
-        * make sure the new branch exists
-        * push result to a separate branch
-    """
+        self.client.branch.create(self.stream_id, self.target_branch_name)
+        sent_id = send(result, [transport])
 
-    input_base = receive(carbon_input.object_id, transport)
-
-    client.branch.create(
-        carbon_input.stream_id, carbon_input.target_branch_name
-    )
-
-    result = core.calculate_carbon(input_base)
-
-    sent_id = send(result, [transport])
-
-    client.commit.create(
-        carbon_input.stream_id,
-        sent_id,
-        carbon_input.target_branch_name,
-    )
+        self.client.commit.create(
+            self.stream_id,
+            sent_id,
+            self.target_branch_name,
+        )

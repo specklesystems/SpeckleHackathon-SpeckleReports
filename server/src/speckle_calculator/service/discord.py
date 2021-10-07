@@ -5,8 +5,7 @@ from dataclasses import dataclass
 
 from specklepy.api.client import SpeckleClient
 
-
-COLOURS = {
+_COLOURS = {
     "speckle blue": 295163,
     "spark": 119293,
     "futures": 9011703,
@@ -21,17 +20,17 @@ COLOURS = {
     "red": 16532034,
 }
 
-SPECKLE_LOGO = "https://avatars.githubusercontent.com/u/65039012?s=200&v=4"
+_SPECKLE_LOGO = "https://avatars.githubusercontent.com/u/65039012?s=200&v=4"
 
-MESSAGE_TEMPLATE = {
+_MESSAGE_TEMPLATE = {
     "username": "Speckle",
-    "avatar_url": SPECKLE_LOGO,
+    "avatar_url": _SPECKLE_LOGO,
     "embeds": [
         {
             "author": {
                 "name": "speckle user",
                 "url": "",
-                "icon_url": SPECKLE_LOGO,
+                "icon_url": _SPECKLE_LOGO,
             },
             "title": "",
             "url": "",
@@ -52,28 +51,35 @@ class DiscordInput:
     discord_url: str
 
 
-def send_to_discord(discord_url: str, message: str):
-    files = message.pop("files")
-    debug(message)
-    files.append(("payload_json", (None, json.dumps(message))))
-    res = requests.post(discord_url, files=files)
-    debug(res)
+@dataclass
+class DiscordCarbonNotifier:
 
+    client: SpeckleClient
+    stream_id: str
+    original_branch: str
+    discord_url: str
+    report_url: str
 
-def on_commit_create(discord_input: DiscordInput, transport, client: SpeckleClient):
-    stream = client.stream.get(discord_input.stream_id)
+    def _send_to_discord(self, message: str):
+        files = message.pop("files")
+        files.append(("payload_json", (None, json.dumps(message))))
+        res = requests.post(self.discord_url, files=files)
+        debug(res)
 
-    stream.name
+    def __call__(self) -> None:
 
-    msg = MESSAGE_TEMPLATE
-    msg["embeds"][0].update(
-        {
-            "title": f"Carbon report ready in {stream.name}",
-            "url": f"{discord_input.server_url}/streams/{discord_input.stream_id}/branches/main",
-            "description": f"Check the report at {discord_input.carbon_url}/streams/{discord_input.stream_id}",
-            "color": COLOURS["futures"],
-            "fields": [],
-        }
-    )
+        stream = self.client.stream.get(self.stream_id)
+        msg = _MESSAGE_TEMPLATE
 
-    send_to_discord(discord_input.discord_url, msg)
+        msg = _MESSAGE_TEMPLATE
+        msg["embeds"][0].update(
+            {
+                "title": f"Carbon report ready in {stream.name}",
+                "url": f"{self.discord_url}/streams/{self.stream_id}/branches/{self.original_branch}",
+                "description": f"Check the report at {self.report_url}/streams/{self.stream_id}",
+                "color": _COLOURS["futures"],
+                "fields": [],
+            }
+        )
+
+        self._send_to_discord(msg)

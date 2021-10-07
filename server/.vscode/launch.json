@@ -10,9 +10,9 @@
       "request": "launch",
       "program": "${file}",
       "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/.env",
       "env": {
         "PYTHONPATH": "${cwd}",
-        "SPECKLE_TOKEN": "YOUR TOKEN HERE"
       }
     },
     {
@@ -25,9 +25,9 @@
       ],
       "jinja": true,
       "justMyCode": true,
+      "envFile": "${workspaceFolder}/.env",
       "env": {
         "PYTHONPATH": "${cwd}",
-        "SPECKLE_TOKEN": "YOUR TOKEN HERE"
       }
     }
   ]

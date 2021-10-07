@@ -1,99 +1,38 @@
-from typing import Any
+from importlib.metadata import version
+
 from fastapi import FastAPI, Depends
 from fastapi.background import BackgroundTasks
-from specklepy.api.client import SpeckleClient
-from specklepy.transports.server.server import ServerTransport
-from speckle_calculator.service import carbon, discord
-from app.transport_provider import speckle_token_provider
 
+import speckle_calculator
 
-from pydantic import BaseModel, Field
-import stringcase
+from app.webhook_handler_registry import WebhookHandlerRegistry
+from app.providers import webhook_registry
+from app.models import Webhook
 
 
 app = FastAPI()
 
 
-class CarbonBase(BaseModel):
-    """Carbon base model"""
-
-    class Config:
-        alias_generator = stringcase.camelcase
+@app.get("/healt")
+async def health():
+    return True
 
 
-class Commit(CarbonBase):
-    stream_id: str
-    branch_name: str
-    source_application: str
-    message: str
-    object_id: str
-
-
-class CommitCreateData(CarbonBase):
-    id: str
-    commit: Commit
-
-
-class CommitCreateEvent(BaseModel):
-    event_name: str
-    data: CommitCreateData
-
-
-class ServerData(CarbonBase):
-
-    canonical_url: str
-
-
-class Webhook(CarbonBase):
-    """Data structure for a commit create event."""
-
-    stream_id: str
-    user_id: str
-    activity_message: str
-    event: CommitCreateEvent
-    server: ServerData
-
-
-class WebhookWrapper(Webhook):
-
-    payload: str
-
-
-def _create_carbon_input(webhook: Webhook) -> carbon.CarbonInput:
-    return carbon.CarbonInput(
-        webhook.stream_id,
-        webhook.event.data.commit.object_id,
-    )
-
-
-def _create_chatbot_input(webhook: Webhook) -> discord.DiscordInput:
-    return discord.DiscordInput(
-        webhook.server.canonical_url,
-        webhook.stream_id,
-        "http://localhost:8080/",
-        "https://discord.com/api/webhooks/889904023782694952/MK0_i9aI-DKStrAvgk7hzctw3tt0mKRq8rBN27DFKlUPL8mbBGF326C2f106RRNIm4UI",
-    )
-
-
-_registered_handlers = {
-    "main": {"input_creator": _create_carbon_input, "solver": carbon.calculate_carbon},
-    "carbon-results": {
-        "input_creator": _create_chatbot_input,
-        "solver": discord.on_commit_create,
-    },
-}
+@app.get("/version")
+async def get_version():
+    return version(speckle_calculator.__name__)
 
 
 @app.post("/calculate")
 async def calculate(
     webhook_data: dict,
     background_tasks: BackgroundTasks,
-    speckle_token: str = Depends(speckle_token_provider),
+    webhook_handler_registry: WebhookHandlerRegistry = Depends(webhook_registry),
 ) -> str:
 
     payload = webhook_data["payload"]
 
-    # cause of input format... talk to Dim about this
+    # this is here to ease testing without double string encoded payload.
     if isinstance(payload, dict):
         import json
 
@@ -101,21 +40,9 @@ async def calculate(
 
     webhook = Webhook.parse_raw(payload)
 
-    if handler := _registered_handlers.get(webhook.event.data.commit.branch_name):
-        client = SpeckleClient(host=webhook.server.canonical_url, use_ssl=False)
-        client.authenticate(speckle_token)
-        transport = ServerTransport(client, webhook.stream_id)
-
-        input = handler["input_creator"](webhook)
-        solver = handler["solver"]
-
-        background_tasks.add_task(
-            solver,
-            input,
-            transport,
-            client,
-        )
+    if handler := webhook_handler_registry(webhook):
+        background_tasks.add_task(handler)
         return "On it."
 
     else:
-        return "I'll pass."
+        return "No handlers registered for this hook."
