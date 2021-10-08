@@ -47,7 +47,7 @@ This repo contains the code for the a **carbon cost report generator** developed
 
 [**We wrote a blog post about it!**]()
 
-> Go see the app live [here]()
+> Go see the app live [here](https://stupefied-yonath-58869c.netlify.app/)
 
 It is divided into 2 folders:
 
