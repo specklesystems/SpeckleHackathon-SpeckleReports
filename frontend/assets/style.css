@@ -1,0 +1,49 @@
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  background-color: #f0f0f0;
+}
+
+.header {
+  background-color: #0A2948;
+  height: 256px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header-title {
+  color: #FAFAFA;
+  font-size: 48px;
+  padding-bottom: 12px;
+  font-weight: bold;
+  text-align: center;
+  font-family: "Space Mono";
+  margin: 0 auto;
+}
+
+.header-description {
+  color: #FAFAFA;
+  margin: 4px auto;
+  text-align: center;
+  max-width: 450px;
+}
+
+.container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  max-width: 1200;
+  padding-right: 10px;
+  padding-left: 10px;
+  margin-top: 32px;
+}
+
+.card {
+  display: flex;
+  margin: 1em;
+  box-shadow: 0 20px 40px -14px rgba(0,0,0,0.25);
+  @media {
+    width: 48%;
+  }
+}
