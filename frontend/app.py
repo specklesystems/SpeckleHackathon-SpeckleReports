@@ -2,13 +2,14 @@
 # visit http://127.0.0.1:8050/ in your web browser.
 
 from os import path
+from devtools import debug
 import dash
 from dash import dcc
 from dash import html
 from dash.dependencies import Input, Output
 from specklepy.api.credentials import StreamWrapper
-from data_plots import get_report_commit
-from data_plots import create_plots
+from data_plots import get_commit_embed_str
+from data_plots import create_plots, get_stream_wrapper
 
 external_stylesheets = [
     {
@@ -44,6 +45,7 @@ app.layout = html.Div(
             ],
             className="header",
         ),
+        html.Iframe(id="viewer", className="Container", style={"width": "80%", "height": "550px", "display": "block", "margin": "auto", "margin-top": "50px"}),
         html.Div(
             id="page-content",
             className="container",
@@ -51,6 +53,15 @@ app.layout = html.Div(
     ],
 )
 
+@app.callback(
+    dash.dependencies.Output("viewer", "src"),
+    [dash.dependencies.Input("url", "pathname")],
+)
+def display_viewer(pathname):
+    try:
+        return get_commit_embed_str(pathname)
+    except Exception:
+        return None
 
 @app.callback(
     dash.dependencies.Output("page-content", "children"),

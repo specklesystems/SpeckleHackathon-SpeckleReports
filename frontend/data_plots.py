@@ -3,20 +3,32 @@ import os
 import pandas as pd
 import plotly.express as px
 from specklepy.api.operations import receive
-from specklepy.api.credentials import StreamWrapper
+from specklepy.api.wrapper import StreamWrapper
 
 from devtools import debug
 from specklepy.objects.base import Base
 
 
-def get_report_commit(url_path: str) -> Base:
+def get_stream_wrapper(url_path: str) -> StreamWrapper:
     url = os.environ.get("SPECKLE_SERVER_URL") + url_path
-    wrap = StreamWrapper(url)
-    client = wrap.get_client()
-    client.authenticate(os.environ.get("SPECKLE_TOKEN"))
+    wrapper = StreamWrapper(url)
+    wrapper.get_client(os.environ.get("SPECKLE_TOKEN"))
 
+    return wrapper
+
+
+def get_report_commit(url_path: str) -> Base:
+    wrap = get_stream_wrapper(url_path)
+    client = wrap.get_client()
     commit = client.commit.get(wrap.stream_id, wrap.commit_id)
+
     return receive(commit.referencedObject, wrap.get_transport())
+
+
+def get_commit_embed_str(url_path: str) -> str:
+    wrapper = get_stream_wrapper(url_path)
+    commit_obj = get_report_commit(url_path)
+    return f"{wrapper.server_url}/embed?stream={wrapper.stream_id}&object={getattr(commit_obj, 'commitId', '')}"
 
 
 def create_plots(url_path: str):

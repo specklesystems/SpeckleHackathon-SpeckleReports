@@ -15,6 +15,7 @@ class WebhookHandlerRegistry:
     _token_registry: Dict[str, str]
     _discord_url: str
     _report_url: str
+    _discord_url: str
     _slack_token: str
     _slack_channel_id: str
     _tracked_branch: str = "main"
@@ -24,17 +25,16 @@ class WebhookHandlerRegistry:
         branch_name = webhook.event.data.commit.branch_name
         server_url = webhook.server.canonical_url.rstrip("/")
         debug(webhook)
-        if token := self._token_registry.get(server_url):
-            client = SpeckleClient(
-                host=webhook.server.canonical_url,
-                use_ssl=server_url.startswith("https://"),
-            )
-            client.authenticate(token)
-        else:
+        if not (token := self._token_registry.get(server_url)):
             raise ValueError(
                 f"The application is not authorized on {server_url} server"
             )
 
+        client = SpeckleClient(
+            host=webhook.server.canonical_url,
+            use_ssl=server_url.startswith("https://"),
+        )
+        client.authenticate(token)
         if branch_name == self._tracked_branch:
             # calculate carbon!
             return carbon.CarbonCalculator(
@@ -46,11 +46,10 @@ class WebhookHandlerRegistry:
 
         if branch_name == self._result_branch:
             # slack notifications
-            return bots.SlackCarbonNotifier(
+            return bots.DiscordCarbonNotifier(
                 client,
                 webhook.stream_id,
                 webhook.event.data.id,
-                self._slack_token,
-                self._slack_channel_id,
+                self._discord_url,
                 self._report_url,
             )

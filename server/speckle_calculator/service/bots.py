@@ -96,11 +96,8 @@ class SlackCarbonNotifier:
     report_url: str
 
     def _send_to_slack(self, message: dict):
-        res = requests.post(
-            "https://slack.com/api/chat.postMessage",
-            json=message,
-            headers={"Authorization": "Bearer " + self.slack_token},
-        )
+        res = requests.post("https://slack.com/api/chat.postMessage", json=message, headers={"Authorization": f"Bearer {self.slack_token}"})
+
         debug(res)
 
     def __call__(self) -> None:

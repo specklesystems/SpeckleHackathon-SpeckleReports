@@ -24,7 +24,7 @@ class CarbonCalculator:
             * make sure the new branch exists
             * push result to a separate branch
         """
-        transport = ServerTransport(self.client, self.stream_id)
+        transport = ServerTransport(self.stream_id, self.client)
         input_base = receive(self.input_object_id, transport)
         result = core.calculate_carbon(input_base)
 

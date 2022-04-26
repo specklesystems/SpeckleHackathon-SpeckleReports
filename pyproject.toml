@@ -6,7 +6,7 @@ authors = ["izzy lyseggen <izzy.lyseggen@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-specklepy = "^2.3.5"
+specklepy = "^2.6.7"
 fastapi = "^0.70.0"
 stringcase = "^1.2.0"
 uvicorn = "^0.15.0"
